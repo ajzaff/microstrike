@@ -1,6 +1,6 @@
 package com.alanjz.microstrike.map
 
-import java.awt.Dimension
+import java.awt.{Point,Dimension}
 
 import com.alanjz.microstrike.Player
 
@@ -8,9 +8,10 @@ import scala.collection.mutable.ListBuffer
 
 abstract class Map {
   val bounds : Dimension
+  lazy val center = new Point(bounds.width / 2, bounds.height / 2)
 }
 
-class MapInstance(map : Map) {
+class MapInstance(val map : Map) {
   private val _players = ListBuffer.empty[Player]
   private var _perspective : Option[Int] = None
 
@@ -19,13 +20,15 @@ class MapInstance(map : Map) {
       Some(players(_perspective.get))
     else None
 
+  def perspectivePoint : Point =
+    if(perspective.isDefined) perspective.get.point
+    else map.center
+
   def players = _players.toList
 
   def N : Int = _players.length
   def addPlayer(player : Player, focus : Boolean = false) = {
     _players += player
-    player.setX(0)
-    player.setY(0)
     if(focus) _perspective = Some(N-1)
   }
   def removePlayer(player : Player) = _players -= player

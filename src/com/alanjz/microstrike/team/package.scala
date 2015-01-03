@@ -2,6 +2,8 @@ package com.alanjz.microstrike
 
 import java.awt.Color
 
+import scala.util.Random
+
 package object team {
 
   trait TeamGroup {
@@ -24,7 +26,7 @@ package object team {
   case object Green extends Team(Color.green) with GroupA
   case object Yellow extends Team(Color.yellow) with GroupB
   case object Pink extends Team(Color.pink) with GroupA
-  case object Orange extends Team(Color.orange) with GroupB
+  case object Orange extends Team(new Color(255, 114, 20)) with GroupB
   case object White extends Team(Color.white) with GroupA
   case object Cyan extends Team(Color.cyan) with GroupB
   case object Magenta extends Team(Color.magenta) with GroupB
@@ -32,5 +34,18 @@ package object team {
 
   object Team {
     implicit def toAwtColor(lhs : Team) : Color = lhs.toAwtColor
+
+    def randomTeam = Random.nextInt(10) match {
+      case 0 => Red
+      case 1 => Blue
+      case 2 => Green
+      case 3 => Yellow
+      case 4 => Pink
+      case 5 => Orange
+      case 6 => White
+      case 7 => Cyan
+      case 8 => Magenta
+      case 9 => Brown
+    }
   }
 }
